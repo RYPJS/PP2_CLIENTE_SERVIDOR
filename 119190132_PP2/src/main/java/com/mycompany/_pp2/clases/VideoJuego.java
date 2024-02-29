@@ -4,11 +4,13 @@
  */
 package com.mycompany._pp2.clases;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kenda
  */
-public class VideoJuego {
+public class VideoJuego implements Serializable{
     private String tituloJuego;
     private String ColosolaDisponible;
     private String anoLanzamiento;

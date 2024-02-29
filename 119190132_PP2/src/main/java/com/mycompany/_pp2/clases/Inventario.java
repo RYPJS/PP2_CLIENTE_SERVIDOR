@@ -31,8 +31,8 @@ public class Inventario implements Serializable {
         this.inventarioJuegos = new HashMap<>();
     }
 
-    public void agregarJuego() {
-        VideoJuego juego = new VideoJuego();
+    public void agregarJuego(VideoJuego juego ) {
+       
         juego.setTituloJuego(JOptionPane.showInputDialog(null, "nomkbre"));
         juego.setColosolaDisponible(JOptionPane.showInputDialog(null, "consola"));
         juego.setAnoLanzamiento(JOptionPane.showInputDialog(null, "ano"));
@@ -62,11 +62,11 @@ public class Inventario implements Serializable {
         }
     }
 
-    public void almacenar(VideoJuego juego) {
+    public void almacenar() {
         try {
             FileOutputStream copiaInventario = new FileOutputStream("Inventario.PP2");
             ObjectOutputStream salida = new ObjectOutputStream(copiaInventario);
-            salida.writeObject(juego);
+            salida.writeObject(inventarioJuegos);  // Almacena todo el mapa
             salida.close();
             copiaInventario.close();
         } catch (FileNotFoundException ex) {
@@ -76,19 +76,25 @@ public class Inventario implements Serializable {
         }
     }
 
-    public void leerAlmacen(VideoJuego juego) {
+    public void leerAlmacen() {
         FileInputStream copiaInventario2;
         try {
             copiaInventario2 = new FileInputStream("Inventario.PP2");
             ObjectInputStream input = new ObjectInputStream(copiaInventario2);
-            VideoJuego juegoLeido = (VideoJuego) input.readObject();
+            inventarioJuegos = (Map<Integer, VideoJuego>) input.readObject();
             input.close();
             copiaInventario2.close();
+            System.out.println("Mostrando juegos en JOptionPane...");
+            StringBuilder nombresJuegos = new StringBuilder("Juegos en el inventario:\n");
+            for (Map.Entry<Integer, VideoJuego> entry : inventarioJuegos.entrySet()) {
+                VideoJuego juego = entry.getValue();
+                System.out.println(juego.getTituloJuego());
+            }
+            System.out.println("Caballo H de las montanas");
+
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -99,7 +105,16 @@ public class Inventario implements Serializable {
             if (juego != null && juego.getTituloJuego() != null) {
                 System.out.println(juego.getTituloJuego());
             }
-        }   
+        }
+    }
+
+    public VideoJuego obtenerJuego(String nombreJuego) {
+        for (VideoJuego juego : this.inventarioJuegos.values()) {
+            if (juego != null && juego.getTituloJuego() != null && juego.getTituloJuego().equals(nombreJuego)) {
+                return juego;
+            }
+        }
+        throw new IllegalArgumentException("Juego no encontrado");
     }
 
 }

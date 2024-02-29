@@ -3,7 +3,10 @@
  */
 package com.mycompany._pp2;
 
+import com.mycompany._pp2.GUI.*;
 import com.mycompany._pp2.clases.Inventario;
+import com.mycompany._pp2.clases.VideoJuego;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,13 +15,10 @@ import com.mycompany._pp2.clases.Inventario;
 public class App {
 
     public static void main(String[] args) {
-        Inventario inventario = new Inventario();
-        inventario.agregarJuego();
-        inventario.agregarJuego();
-        inventario.eliminarJuego();
-        inventario.imprimirInventario();
-        inventario.agregarJuego();
-        inventario.imprimirInventario();
-
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Principal().setVisible(true);
+            }
+        });
     }
 }
